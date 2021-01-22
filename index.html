@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Nyx</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <link rel="stylesheet" type="text/css" href="./style/main.css">
+    <link rel="stylesheet" type="text/css" href="./global/global.css">
+    <link rel="stylesheet" href="./style/bootstrap.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://ajax.googleapis.com ">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<body>
+    <div>
+        <nav class="main-menu">
+            <div>
+                <a class="logo" href="http://startific.com"> </a>
+            </div>
+            <div class="settings"></div>
+            <div class="scrollbar" id="style-1">
+                <ul>
+                    <li>
+                        <a href=""> <i class="fa fa-user fa-lg"></i> <span class="nav-text">Perfil de Invocador</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#top"> <i class="fa fa-user fa-lg"></i> <span
+                                class="nav-text">Seleção de Campeões</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href=""> <i class="fa fa-envelope-o fa-lg"></i> <span class="nav-text">ARAM Exploit</span> </a>
+                    </li>
+
+                </ul>
+                <li>
+                    <a href="http://startific.com"> <i class="fa fa-question-circle fa-lg"></i> <span
+                            class="nav-text">Help</span> </a>
+                </li>
+                <ul class="logout">
+                    <li>
+                        <a href="http://startific.com"> <i class="fa fa-lightbulb-o fa-lg"></i> <span class="nav-text">
+                                BLOG
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+        </nav>
+        <div class="title">
+            <h3>SISTEMA NYX</h3>
+            <h1>Bem vindo de volta, <span id="nomeInvocador">Invocador</span>.</h1>
+            <h2>Da equipe da Tyr Swords Gaming, esperamos que tenha uma <span>boa jogatina</span>. <br>Estamos aqui se precisar.</h2>
+        </div>
+        <div class='estatisticas'>
+            <div class='Card'>
+                <div id="cardTitle">Invocador</div>
+                <div id="cardProfile" class='summoner'>
+                    <div class="Invocador">
+                        <div id="invocadorImagem"></div>
+                        <div id="nivelInvocador">Nível </div>
+                    </div>
+                </div>
+            </div>
+            <div class='Card'>
+                <div id="cardTitle" class="titleStatus">Alterar status e trocar de elo</div>
+                <div id="statsCard">
+                    <form id="definirStatus">
+                        <textarea rows="5" type="text" id="statusUsuario" class="form-control" placeholder="Digite aqui seu status novo. Sem limite de caracteres."></textarea><br>
+                        <button type="submit" class="btn btn-primary">Definir status</button>
+                    </form>
+                    <form id='changeElo'>
+                        <div class="input-group">
+                            <select id="tier" class="form-control">
+                                <option value="UNRANKED">Unranked</option>
+                                <option value="IRON">Ferro</option>
+                                <option value="BRONZE">Bronze</option>
+                                <option value="SILVER">Prata</option>
+                                <option value="GOLD">Ouro</option>
+                                <option value="PLATINUM">Platina</option>
+                                <option value="DIAMOND">Diamante</option>
+                                <option value="MASTER">Mestre</option>
+                                <option value="GRANDMASTER">Grão-Mestre</option>
+                                <option value="CHALLENGER" selected="selected">Desafiante</option>
+                            </select>
+                            <span class="input-group-addon"></span>
+                            <select id="division" class="form-control">
+                                <option value="V">V</option>
+                                <option value="IV">IV</option>
+                                <option value="III">III</option>
+                                <option value="II">II</option>
+                                <option value="I">I</option>
+                                <option value="" selected="selected">–</option>
+                            </select>
+                        <span class="input-group-addon"></span>
+                            <select id="queue" class="form-control">
+                                <option value="RANKED_SOLO_5x5" selected="selected">Solo/Duo</option>
+                                <option value="RANKED_FLEX_SR">Flex</option>
+                                <option value="RANKED_TFT">TFT</option>
+                                <option value="RANKED_FLEX_TT">Twisted (3v3)</option>
+                            </select>
+                        </div>
+                            <button type="submit" class="btn btn-primary">Definir elo</button>
+                </form>
+            </div>
+            </div>
+            <div class='Card'>
+                <div id="cardTitle" class="titleStatus">Disponibilidade</div>
+                <div id="statsCard">
+                    <form id="disponibilidadeClient">
+                        <select id="availability" class="form-control">
+                            <option value="chat">Online</option>
+                            <option value="away">Ocupado</option>
+                            <option value="mobile">LoL+</option>
+                            <option value="offline">Offline</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary">Alterar disponibilidade</button>
+                    </form>
+                    <div id="aramExploitButton">
+                    <h4>Exploit ARAM - Skin gratuita</h4>
+                    <p id="descriptionExploit">Libere Bônus de Skin para todos os<br> seus aliados dentro da partida</p>
+                    <button id='aramBoost' type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="top" onclick="liberarSkin()" title="ATENÇÃO! Caso você tenha 95 ou mais de RP ele será consumido.">Liberar skin</button>
+                </div>   
+                </div>
+            </div>
+            <div class='Card'>
+                <div id="cardTitle">Seu ping in-game é de</div>
+                <div id="cardPingGame" >
+                    <h1 id='valorPing'></h1>
+                   
+                </div>
+            </div><div class='Card'>
+                <div id="cardTitle"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Seu ping com outros serviços</b></div>
+                <div id="cardPings">
+                        <div class="item">
+                            <div id="titleSection"><i class="fa fa-sign-in"></i><h4>Servidor de Login</h4></div>
+                            <p><span id="pingLogin">Aguardando resposta...</span></p>
+                        </div>
+                        <div class="item">
+                            <div id="titleSection"><i class="fa fa-bars" ></i><h4>Servidor do cliente</h4></div>
+                            <p><span id="pingClient">Aguardando resposta...</span></p>
+                        </div>
+                        <div class="item">
+                            <div id="titleSection"><i class="fa fa-comments-o"></i><h4>Servidor de chat</h4></div>
+                            <p><span id="pingChat">Aguardando resposta...</span></p>
+                        </div>
+                        
+
+                </div>
+            </div>
+
+        <script src="./index.js"></script>
+</body>
+
+</html>
