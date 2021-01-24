@@ -11,7 +11,7 @@ function createWindow() {
     width: 1600,
     height: 900,
     resizable: false,
-    frame:false,
+    frame: false,
     webPreferences: {
       nodeIntegration: true
     }
@@ -334,9 +334,10 @@ var autoAccept = function () {
 
 ipcMain.on('draftChampionSelect', (event, championstoPickandBan, state) => {
   draft_enabled = state;
-  autoAccept_enabled=true;
+  autoAccept_enabled = true;
   draftPickLockBan(championstoPickandBan);
 })
+var a=0;
 var currentTentativePick = 0;
 var draftPickLockBan = function (champions) {
   setInterval(() => {
@@ -355,8 +356,15 @@ var draftPickLockBan = function (champions) {
           'cellID': 0,
         };
         infoUsuario.cellID = data.localPlayerCellId;
+        
         if (data.httpStatus != 404) {
-          if (data.actions[1][0].completed) { /// pickar
+          if(data.timer.phase=="PLANNING"){
+            currentTentativePick=0;
+            }
+          if(data.actions[7][0].completed==true){
+            draft_enabled=false;
+            }
+          if (data.actions[1][0].completed) { 
             let url = routes.Route('submitChampSelectAction') + associations[data.localPlayerCellId];
             let body = {
               url: url,
@@ -366,32 +374,25 @@ var draftPickLockBan = function (champions) {
               },
               json: {
                 "actorCellId": 0,
-                "championId":champions.pick[currentTentativePick],
+                "championId": champions.pick[currentTentativePick],
                 "completed": true,
                 "id": 0,
                 "isAllyAction": true,
                 "type": "string"
               }
             }
-            let callback2 = function (error, response, body){ //null?
-              
-              try{
-                
-                console.log(body.httpStatus)
-                var x = Object.entries(body)    
-                console.log(x[1]);
-                console.log(body)         
-                 
-              if(body.httpStatus == '500')
-              currentTentativePick++;
-              }
-              catch (e){
-                console.log('--------------------------- erro?')
-                console.log(e.message)
-              }
-              
+            let callback2 = function (error, response, body) { //null?
+              try {
+                if (body.httpStatus == '500')
+                  currentTentativePick++;
+                if (body.httpStatus == '200') {
+                  console.log('finalizado.')
+                  currentTentativePick = 0;
+                  draft_enabled = false;
+                }
+              } catch (e) {}
             }
-            request.patch(body,callback2);
+            request.patch(body, callback2);
           } else { // banir
             let url = routes.Route('submitChampSelectAction') + data.localPlayerCellId;
             let body = {
