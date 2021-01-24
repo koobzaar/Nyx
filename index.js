@@ -14,6 +14,14 @@ disponibilidadeClient.addEventListener('submit', submitAvailability)
 formularioStatus.addEventListener('submit', envioStatus);
 mudarElo.addEventListener('submit', submitTierDivison);
 
+const closeApp = document.getElementById('close');
+closeApp.addEventListener('click', () => {
+    ipcRenderer.send('close-me')
+});
+const minimizeApp = document.getElementById('minimize');
+minimizeApp.addEventListener('click', () => {
+  ipcRenderer.send('minimize_app')
+});
 ipcRenderer.on('pingServidordeJogo1', function (e, item) {
   $('.classificacaoPing').remove();
   if (item < 35)
@@ -59,8 +67,11 @@ async function profileUpdate() {
     console.log("And error occured updating the profile information: " + e)
   }
 }
-profileUpdate();
 
+profileUpdate();
+function openContato(){
+  ipcRenderer.send('Contato')
+}
 function liberarSkin(e){
   console.log('liberando')
   ipcRenderer.send('liberarSkin', e);

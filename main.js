@@ -8,16 +8,32 @@ let JanelaPrincipal;
 
 function createWindow() {
   JanelaPrincipal = new BrowserWindow({
-    width: 1200,
-    height: 800,
+    width: 1600,
+    height: 900,
+    resizable: false,
+    frame:false,
     webPreferences: {
       nodeIntegration: true
     }
   })
-  // win.removeMenu();
+  // JanelaPrincipal.removeMenu();
   JanelaPrincipal.loadFile('./index.html')
-}
-
+};
+var associations = [
+  10,
+  13,
+  14,
+  17,
+  18,
+  11,
+  12,
+  15,
+  16,
+  19,
+  11
+];
+// Enable live reload for all the files inside your project directory
+require('electron-reload')(__dirname);
 app.on('ready', function () {
   createWindow()
 });
@@ -26,6 +42,12 @@ app.on('window-all-closed', () => {
     app.quit()
   }
 })
+ipcMain.on('Contato', function () {
+  const {
+    shell
+  } = require('electron');
+  shell.openExternal('https://discord.gg/zREzYzB');
+});
 var Summoner = require('./lib/invocador')
 var url = require('url')
 var path = require('path')
@@ -38,6 +60,12 @@ var routes
 // load configuration from file 'config-default-' + process.platform
 // Only linux is supported at the moment
 var ping = require('ping');
+const {
+  type
+} = require('os');
+var autoAccept_enabled = false;
+var instalock_enabled = false;
+var draft_enabled = false;
 async function pingRiot() {
 
   var hosts = ['45.7.36.80', 'lq.br.lol.riotgames.com', 'prod.br.lol.riotgames.com', 'br.chat.si.riotgames.com'];
@@ -76,6 +104,12 @@ connector.on('connect', (data) => {
 
   console.log('Request base url set to: ' + routes.getAPIBase())
 })
+ipcMain.on('close-me', (evt, arg) => {
+  app.quit()
+})
+ipcMain.on('minimize_app', function () {
+  JanelaPrincipal.minimize()
+})
 
 pingRiot();
 // load configuration from file 'config-default-' + process.platform
@@ -93,7 +127,6 @@ var requestUrl
 function getLocalSummoner() {
 
   let url = routes.Route("localSummoner")
-  console.log(url)
   let body = {
     url: url,
     "rejectUnauthorized": false,
@@ -116,7 +149,6 @@ ipcMain.on('profileUpdate', (event, wins, losses) => {
 ipcMain.on('alterarStatus', (event, status) => {
 
   let url = routes.Route("submitStatus")
-  console.log(status)
   let body = {
     url: url,
     "rejectUnauthorized": false,
@@ -132,8 +164,54 @@ ipcMain.on('alterarStatus', (event, status) => {
 
 })
 
+var autoAccept = function () {
+  setInterval(function () {
+    if (autoAccept_enabled) {
+      if (!routes) return
+
+      let url = routes.Route("autoAccept")
+
+      let body = {
+        url: url,
+        "rejectUnauthorized": false,
+        headers: {
+          Authorization: routes.getAuth()
+        },
+      }
+
+      let callback = function (error, response, body) {
+        if (!body || !IsJsonString(body)) return
+        var data = JSON.parse(body)
+
+        if (data["state"] === "InProgress") {
+
+          if (data["playerResponse"] === "None") {
+            let acceptUrl = routes.Route("accept")
+            let acceptBody = {
+              url: acceptUrl,
+              "rejectUnauthorized": false,
+              headers: {
+                Authorization: routes.getAuth()
+              },
+              json: {}
+            }
+
+            let acceptCallback = function (error, response, body) {}
+
+            if (autoAccept_enabled) {
+              request.post(acceptBody, acceptCallback)
+            }
+
+          }
+        }
+      }
+
+      request.get(body, callback)
+    }
+  }, 1000)
+}
+
 ipcMain.on('submitAvailability', (event, availability) => {
-  console.log(availability)
   let url = routes.Route("submitAvailability")
   let body = {
     url: url,
@@ -151,19 +229,15 @@ ipcMain.on('submitAvailability', (event, availability) => {
 })
 
 ipcMain.on('liberarSkin', (event) => {
-  console.log('chegou')
-  
   let url = routes.Route("aramboost")
-  console.log(url)
   let body = {
     url: url,
     "rejectUnauthorized": false,
     headers: {
       Authorization: routes.getAuth()
     },
-    json:{}
+    json: {}
   }
-  console.log('foi?')
   request.post(body)
 
 })
@@ -194,8 +268,219 @@ ipcMain.on('submitTierDivison', (event, tier, division, queue) => {
 ipcMain.on('submitLoot', (event) => {
 
   let url = routes.Route("lolchatv1friends");
-  console.log(url)
+})
+ipcMain.on('autoAccept', (event, int) => {
+  if (int) {
+    autoAccept_enabled = true
+  } else {
+    autoAccept_enabled = false
+  }
 })
 
+function IsJsonString(str) {
+  try {
+    JSON.parse(str);
+  } catch (e) {
+    return false;
+  }
+  return true;
+}
+var autoAccept = function () {
+  setInterval(function () {
+    if (autoAccept_enabled) {
+      if (!routes) return
 
+      let url = routes.Route("autoAccept")
+
+      let body = {
+        url: url,
+        "rejectUnauthorized": false,
+        headers: {
+          Authorization: routes.getAuth()
+        },
+      }
+
+      let callback = function (error, response, body) {
+        if (!body || !IsJsonString(body)) return
+        var data = JSON.parse(body)
+
+        if (data["state"] === "InProgress") {
+
+          if (data["playerResponse"] === "None") {
+            let acceptUrl = routes.Route("accept")
+            let acceptBody = {
+              url: acceptUrl,
+              "rejectUnauthorized": false,
+              headers: {
+                Authorization: routes.getAuth()
+              },
+              json: {}
+            }
+
+            let acceptCallback = function (error, response, body) {}
+
+            if (autoAccept_enabled) {
+              request.post(acceptBody, acceptCallback)
+            }
+
+          }
+        }
+      }
+
+      request.get(body, callback)
+    }
+  }, 1000)
+}
+
+ipcMain.on('draftChampionSelect', (event, championstoPickandBan, state) => {
+  draft_enabled = state;
+  autoAccept_enabled=true;
+  draftPickLockBan(championstoPickandBan);
+})
+var currentTentativePick = 0;
+var draftPickLockBan = function (champions) {
+  setInterval(() => {
+    if (draft_enabled) {
+      let url = routes.Route('submitChampSelectSession');
+      let body = {
+        url: url,
+        "rejectUnauthorized": false,
+        headers: {
+          Authorization: routes.getAuth()
+        },
+      }
+      let callback = function (error, response, body) {
+        var data = JSON.parse(body);
+        var infoUsuario = {
+          'cellID': 0,
+        };
+        infoUsuario.cellID = data.localPlayerCellId;
+        if (data.httpStatus != 404) {
+          if (data.actions[1][0].completed) { /// pickar
+            let url = routes.Route('submitChampSelectAction') + associations[data.localPlayerCellId];
+            let body = {
+              url: url,
+              "rejectUnauthorized": false,
+              headers: {
+                Authorization: routes.getAuth()
+              },
+              json: {
+                "actorCellId": 0,
+                "championId":champions.pick[currentTentativePick],
+                "completed": true,
+                "id": 0,
+                "isAllyAction": true,
+                "type": "string"
+              }
+            }
+            let callback2 = function (error, response, body){ //null?
+              
+              try{
+                
+                console.log(body.httpStatus)
+                var x = Object.entries(body)    
+                console.log(x[1]);
+                console.log(body)         
+                 
+              if(body.httpStatus == '500')
+              currentTentativePick++;
+              }
+              catch (e){
+                console.log('--------------------------- erro?')
+                console.log(e.message)
+              }
+              
+            }
+            request.patch(body,callback2);
+          } else { // banir
+            let url = routes.Route('submitChampSelectAction') + data.localPlayerCellId;
+            let body = {
+              url: url,
+              "rejectUnauthorized": false,
+              headers: {
+                Authorization: routes.getAuth()
+              },
+              json: {
+                "actorCellId": 0,
+                "championId": champions.ban[0],
+                "completed": true,
+                "id": 0,
+                "isAllyAction": true,
+                "type": "string"
+              }
+            }
+            request.patch(body);
+          }
+        }
+      }
+      request.get(body, callback);
+
+    }
+
+  }, 500);
+};
+
+var instalock = function () {
+  setInterval(function () {
+    if (instalock_enabled) {
+      let url = routes.Route('submitChampSelectSession');
+      let body = {
+        url: url,
+        "rejectUnauthorized": false,
+        headers: {
+          Authorization: routes.getAuth()
+        },
+      }
+
+      let callback = function (error, response, body) {
+        var data = JSON.parse(body);
+        var cellId, i;
+        var localSumId;
+        var spamTimes = 5;
+        var spamTimeMs = 90000 - (500 * spamTimes);
+
+        if (data['isSpectating'] == false && data['timer']['adjustedTimeLeftInPhase'] > spamTimeMs) {
+
+          if (data['isCustomGame'] == false) {
+            cellId = data['localPlayerCellId'];
+
+
+          } else {
+            cellId = data['localPlayerCellId'] + 1;
+
+          }
+          let urlLock = (routes.Route('submitChampSelectAction') + cellId);
+
+          let bodyLock = {
+            url: urlLock,
+            "rejectUnauthorized": false,
+            headers: {
+              Authorization: routes.getAuth()
+            },
+            json: {
+              "championId": championToLock,
+              "completed": true
+
+            }
+          }
+          request.patch(bodyLock);
+
+        }
+      }
+      request.get(body, callback);
+    }
+  }, 500)
+}
+
+ipcMain.on('submitInstalock', (event, champid, int) => {
+  if (int) {
+    championToLock = champid;
+    instalock_enabled = true;
+  } else {
+    instalock_enabled = false;
+  }
+})
+
+autoAccept();
+instalock();
 connector.start()

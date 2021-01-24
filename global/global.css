@@ -1,16 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
 body
 {
   margin:0px;
   padding-left: 90px;
   padding-top: 60px;
-
+  font-family: 'Roboto', sans-serif !important;
 }
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
 
-.logo{
-  
-}
 
 .settings {
   
@@ -292,3 +290,62 @@ background: #e2e2e2;
 width: 100%;
 height: 100%;
 }
+body {
+  background-color: #FAFBFD;
+  font-family: 'Roboto', sans-serif !important;
+}
+
+p {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400 !important;
+}
+
+.title {
+  color: #4C5065;
+  font-family: 'Roboto', sans-serif;
+}
+
+.title span {
+  font-weight: 400;
+}
+
+h1 {
+  margin: 0 !important;
+
+}
+
+h2 {
+  font-size: 15px;
+  font-weight: 400;
+  margin: 0;
+}
+.closeandMinimize
+{
+    display: flex;
+    font-size: 30px;
+    right: 2%;
+    top: 0%;
+    color: white;
+    position: absolute;
+}
+.closeandMinimize img{
+    margin-top: 20px;
+    margin-left: 50px;
+    width: 20px;
+    filter: invert(1);
+}
+.closeandMinimize #close:hover{
+    filter: invert(0.4);
+    cursor: pointer;
+}
+.closeandMinimize #minimize:hover{
+    filter: invert(0.4);
+    cursor: pointer;
+}
+h3 {
+  color: #4072EA;
+  margin: 0;
+  font-weight: 800;
+  font-size: 12px;
+}
+

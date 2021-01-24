@@ -1,0 +1,104 @@
+<head>
+    <meta charset="UTF-8">
+    <title>Nyx</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <link rel="stylesheet" type="text/css" href="./championSelectDraftPick.css">
+    <link rel="stylesheet" type="text/css" href="../../global/global.css">
+    <link rel="stylesheet" href="../../style/bootstrap.css">
+    <script src="championSelectDraftPick.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://ajax.googleapis.com ">
+</head>
+
+<body>
+    <div>
+        <nav class="main-menu">
+            <div>
+                <a class="logo" href="http://startific.com"> </a>
+            </div>
+            <div class="settings"></div>
+            <div class="scrollbar" id="style-1">
+                <ul>
+                    <li>
+                        <a href="../../index.html"> <i class="fa fa-user fa-lg"></i> <span class="nav-text">Perfil de Invocador</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../championSelect/championSelect.html"> <i class="fa fa-gavel"></i> <span
+                                class="nav-text">Seleção de Campeões (Blind)</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#top"> <i class="fa fa-low-vision"></i> <span
+                                class="nav-text">Seleção de Campeões (Draft)</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a onclick="openContato()"> <i class="fa fa-envelope-o fa-lg"></i> <span
+                                class="nav-text">Entre em contato</a></span> </a>
+                    </li>
+                </ul>
+
+        </nav>
+        
+        <div class="title">
+            <h3>SISTEMA NYX</h3>
+            <h1> <span id="nomeInvocador">Invocador</span>, aproveite a Seleção <br>de Campeões automática.</span></h1>
+            <h2>Aceite a fila, selecione seu campeão automaticamente. </h2>
+        </div>
+        <div class="closeandMinimize">
+            <a onclick="minimizar()" id="minimize"><img src="../../assets/remove.svg" alt=""></a>
+            <a onclick="fechar()" id="close"><img src="../../assets/cancel.svg" alt=""></a>
+        </div>
+        <form id="settingsDraft" onsubmit="teste(event); return false;">
+            <div class="mainCard">
+                <div class="selectChampion">
+                    <h1 id="introSelectChampion">Quero selecionar...</h1>
+                    <div id="searchBox" class="autocomplete"><input type="text" id="idChampPick" placeholder="Pega Yasuo pro pai aê"> <button type="button" id="addButton" onclick="add(1)"><img src="../../assets/plus.svg" alt=""></button></div>
+                    <div class="result">
+                        <div class="championSquare" id="pickSideSquare">
+                            <img class="squareImage" id="pickSquare" src="../../assets/Yasuo.jpg" alt="">
+                        </div>
+                        <div class="championDescription">
+                            <h5 class="titleChampion" id="pickTitleChampion">Aqui aparecerá o nome do Campeão</h5>
+                            <p class="titleChampion"  id="pickLoreChampion">Para adicionar a lista de picks, clique em adicionar ao lado do campo de pesquisa. Depois confirme os parâmetros.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="cardLogs">
+                       
+                    </div>
+                </div>
+                <div class="queueOptions">
+                    <h1 id="introSelectChampion">Quero banir...</h1>
+                    <div id="searchBox" class="autocomplete">
+                        <input type="text" id="idChampBan" placeholder="Fvck Lissandra">
+                        <button type="button"  id="addButton" onclick="add(2)"><img src="../../assets/plus.svg" alt=""></button>
+                    </div>
+                    <div class="result">
+                        <div  class="championSquare" id="banSideSquare">
+                            <img class="squareImage" id="banSquare" src="../../assets/Lissandra.jpg" alt="">
+                        </div>
+                        <div class="championDescription">
+                            <h5  class="titleChampion" id="banTitleChampion">Aqui aparecerá o nome do Campeão</h5>
+                            <p class="titleChampion"  id="banLoreChampion" >Para adicionar a lista de picks, clique em adicionar ao lado do campo de pesquisa. Depois confirme os parâmetros.</p>
+                        </div>
+                    </div>
+                    <div id="containerCheckerFila">
+                       <span id="aceitarFila">A fila já será aceita automaticamente</span>
+                        <button type="submit" class="btn btn-primary" id="submitParametros">Confirmar parâmetros</button><br>
+                        <span id="responseConfirmed"></span>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </form>
+    </div>
+    <script>
+        autocomplete(document.getElementById("idChampPick"), championsName);
+        autocomplete(document.getElementById("idChampBan"), championsName);
+    </script>
+    </form>
+    </script>
+</body>
