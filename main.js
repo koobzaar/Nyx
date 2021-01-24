@@ -3,9 +3,7 @@ const {
   BrowserWindow,
   ipcMain
 } = require('electron')
-
 let JanelaPrincipal;
-
 function createWindow() {
   JanelaPrincipal = new BrowserWindow({
     width: 1600,
@@ -33,7 +31,6 @@ var associations = [
   11
 ];
 // Enable live reload for all the files inside your project directory
-require('electron-reload')(__dirname);
 app.on('ready', function () {
   createWindow()
 });
@@ -57,8 +54,6 @@ var LCUConnector = require('lcu-connector')
 var APIClient = require('./lib/routes')
 var connector = new LCUConnector()
 var routes
-// load configuration from file 'config-default-' + process.platform
-// Only linux is supported at the moment
 var ping = require('ping');
 const {
   type
@@ -67,7 +62,6 @@ var autoAccept_enabled = false;
 var instalock_enabled = false;
 var draft_enabled = false;
 async function pingRiot() {
-
   var hosts = ['45.7.36.80', 'lq.br.lol.riotgames.com', 'prod.br.lol.riotgames.com', 'br.chat.si.riotgames.com'];
   setTimeout(async function () {
     for (let host of hosts) {
@@ -112,18 +106,7 @@ ipcMain.on('minimize_app', function () {
 })
 
 pingRiot();
-// load configuration from file 'config-default-' + process.platform
-// Only linux is supported at the moment
-
-
-// Riot Games
-
-let mainWindow
-let addWindow
-var userAuth
-var passwordAuth
-var requestUrl
-
+var mainWindow, addWindow, userAuth, passwordAuth,requestUrl;
 function getLocalSummoner() {
 
   let url = routes.Route("localSummoner")
@@ -163,7 +146,6 @@ ipcMain.on('alterarStatus', (event, status) => {
   request.put(body)
 
 })
-
 var autoAccept = function () {
   setInterval(function () {
     if (autoAccept_enabled) {
@@ -337,7 +319,6 @@ ipcMain.on('draftChampionSelect', (event, championstoPickandBan, state) => {
   autoAccept_enabled = true;
   draftPickLockBan(championstoPickandBan);
 })
-var a=0;
 var currentTentativePick = 0;
 var draftPickLockBan = function (champions) {
   setInterval(() => {
@@ -358,12 +339,10 @@ var draftPickLockBan = function (champions) {
         infoUsuario.cellID = data.localPlayerCellId;
         
         if (data.httpStatus != 404) {
-          if(data.timer.phase=="PLANNING"){
+          if(data.timer.phase=="PLANNING")
             currentTentativePick=0;
-            }
-          if(data.actions[7][0].completed==true){
+          if(data.actions[7][0].completed==true)
             draft_enabled=false;
-            }
           if (data.actions[1][0].completed) { 
             let url = routes.Route('submitChampSelectAction') + associations[data.localPlayerCellId];
             let body = {
@@ -484,4 +463,4 @@ ipcMain.on('submitInstalock', (event, champid, int) => {
 
 autoAccept();
 instalock();
-connector.start()
+connector.start();
