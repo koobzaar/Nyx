@@ -15,8 +15,9 @@ function createWindow() {
     }
   })
   // JanelaPrincipal.removeMenu();
-  JanelaPrincipal.loadFile('./index.html')
+  JanelaPrincipal.loadFile('./pages/loading/loading.html')
 };
+var booted=false;
 var associations = [
   10,
   13,
@@ -101,6 +102,10 @@ connector.on('connect', (data) => {
 ipcMain.on('close-me', (evt, arg) => {
   app.quit()
 })
+ipcMain.on('restart-me', (evt, arg) => {
+  app.relaunch();
+  app.quit();
+})
 ipcMain.on('minimize_app', function () {
   JanelaPrincipal.minimize()
 })
@@ -125,8 +130,18 @@ function getLocalSummoner() {
   request.get(body, callback)
 }
 ipcMain.on('profileUpdate', (event, wins, losses) => {
-  getLocalSummoner()
-  event.returnValue = LocalSummoner.getProfileData()
+  try{
+    getLocalSummoner();
+    event.returnValue = LocalSummoner.getProfileData();
+    if(booted==false)
+    JanelaPrincipal.loadFile('index.html');
+    booted=true;
+    }
+    catch (e){
+      console.log('Erro ao tentar receber as informações do usuário: '+e.message);
+      JanelaPrincipal.loadFile('./pages/summonerNotFound/summonerNotFound.html');
+    }
+  
 })
 
 ipcMain.on('alterarStatus', (event, status) => {
@@ -365,7 +380,6 @@ var draftPickLockBan = function (champions) {
                 if (body.httpStatus == '500')
                   currentTentativePick++;
                 if (body.httpStatus == '200') {
-                  console.log('finalizado.')
                   currentTentativePick = 0;
                   draft_enabled = false;
                 }
