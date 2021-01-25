@@ -1,6 +1,5 @@
 # Nyx 
 ### Gerenciador automático em electron para o cliente do League of Legends
-[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
 
 Nyx tem como principal função automatizar ações e diminuir interações usuário-client. Programado em Electron, conta com ferramentas que manipulam requests client>server via LCU.
 ## Problemáticas e funcionalidades do Nyx
@@ -34,7 +33,8 @@ Você também pode:
 - O uso do código é permitido (com as restrições aqui apresentadas) desde que o nome seja modificado.
 - O software é distribuído sem garantia. Eu, como autor, e esta licença não podem ser responsabilizados por possíveis perdas ou danos pelo uso do software. Usar o codigo dos outros e fazer birra quando ele está errado faz de você um ASNO imbecil. Conserte o problema você mesmo. Um não-idiota submeteria as correções de volta.
 - Proibido modificar o trabalho original para ocultar conteúdo malicioso. Isso faria de você um COMPLETO idiota.  
-- 
+
+
 ## Releases
  Atualmente se encontra em Alpha. Não há previsões para o lançamento oficial.
 Você pode baixar a versão mais recente através desse link:
@@ -60,6 +60,7 @@ Caso queira me ajudar a desenvolver este software, você pode me contactar atrav
 | E-mail | bruno.trigueiro@outlook.com |
 | League of Legends #1 | Kobzar |
 | League of Legends #2 | Kycorax |
+
 Há uma possibilidade maior de eu aceitar sua solicitação na conta Kycorax ao invés da Kobzar.
 
 
