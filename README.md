@@ -22,7 +22,7 @@ Você também pode:
   - Liberar o bônus de batalha no ARAM (boost) mesmo sem ter RP's suficientes.
 
 
-### O que eu posso fazer com esse software?
+### LICENÇA - O que eu posso fazer com esse software?
 
 - O código-fonte obrigatoriamente deve ser público sempre que uma distribuição do software é feita;
 - Modificações do software devem ser lançadas sob os mesmos requisitos aqui apresentados;
