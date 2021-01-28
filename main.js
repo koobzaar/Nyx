@@ -4,12 +4,14 @@ const {
   ipcMain
 } = require('electron')
 let JanelaPrincipal;
+
+var gerenciadorRequest = require('./lib/requestSender.js');
+gerenciadorRequest = new gerenciadorRequest()
 function createWindow() {
   JanelaPrincipal = new BrowserWindow({
     width: 1600,
     height: 900,
     resizable: false,
-    frame: false,
     webPreferences: {
       nodeIntegration: true
     }
@@ -17,7 +19,7 @@ function createWindow() {
   // JanelaPrincipal.removeMenu();
   JanelaPrincipal.loadFile('./pages/loading/loading.html')
 };
-var booted=false;
+var booted = false;
 var associations = [
   10,
   13,
@@ -65,6 +67,7 @@ var draft_enabled = false;
 async function pingRiot() {
   var hosts = ['45.7.36.80', 'lq.br.lol.riotgames.com', 'prod.br.lol.riotgames.com', 'br.chat.si.riotgames.com'];
   setTimeout(async function () {
+
     for (let host of hosts) {
       try {
         if (host === '45.7.36.80') {
@@ -88,16 +91,12 @@ async function pingRiot() {
   }, 500)
 
 }
+
 connector.on('connect', (data) => {
   requestUrl = data.protocol + '://' + data.address + ':' + data.port
   routes = new APIClient(requestUrl, data.username, data.password)
-
+  gerenciadorRequest._carregarDados(data)
   getLocalSummoner()
-
-  userAuth = data.username
-  passwordAuth = data.password
-
-  console.log('Request base url set to: ' + routes.getAPIBase())
 })
 ipcMain.on('close-me', (evt, arg) => {
   app.quit()
@@ -111,9 +110,9 @@ ipcMain.on('minimize_app', function () {
 })
 
 pingRiot();
-var mainWindow, addWindow, userAuth, passwordAuth,requestUrl;
-function getLocalSummoner() {
+var mainWindow, addWindow, userAuth, passwordAuth, requestUrl;
 
+function getLocalSummoner() {
   let url = routes.Route("localSummoner")
   let body = {
     url: url,
@@ -122,44 +121,27 @@ function getLocalSummoner() {
       Authorization: routes.getAuth()
     }
   }
-
   let callback = function (error, response, body) {
+    console.log(body)
     LocalSummoner = new Summoner(body, routes)
   }
-
   request.get(body, callback)
 }
 ipcMain.on('profileUpdate', (event, wins, losses) => {
-  try{
+  try {
     getLocalSummoner();
     event.returnValue = LocalSummoner.getProfileData();
-    if(booted==false)
-    JanelaPrincipal.loadFile('index.html');
-    booted=true;
-    }
-    catch (e){
-      console.log('Erro ao tentar receber as informações do usuário: '+e.message);
-      JanelaPrincipal.loadFile('./pages/summonerNotFound/summonerNotFound.html');
-    }
-  
+    if (booted == false)
+      JanelaPrincipal.loadFile('index.html');
+    booted = true;
+  } catch (e) {
+    console.log('Erro ao tentar receber as informações do usuário: ' + e.message);
+    JanelaPrincipal.loadFile('./pages/summonerNotFound/summonerNotFound.html');
+  }
 })
 
 ipcMain.on('alterarStatus', (event, status) => {
-
-  let url = routes.Route("submitStatus")
-  let body = {
-    url: url,
-    "rejectUnauthorized": false,
-    headers: {
-      Authorization: routes.getAuth()
-    },
-    json: {
-      "statusMessage": status
-    }
-  }
-
-  request.put(body)
-
+  gerenciadorRequest._putInformacoesLCU("statusMessage","submitStatus",status)
 })
 var autoAccept = function () {
   setInterval(function () {
@@ -209,57 +191,31 @@ var autoAccept = function () {
 }
 
 ipcMain.on('submitAvailability', (event, availability) => {
-  let url = routes.Route("submitAvailability")
-  let body = {
-    url: url,
-    "rejectUnauthorized": false,
-    headers: {
-      Authorization: routes.getAuth()
-    },
-    json: {
-      "availability": availability
-    }
-  }
-
-  request.put(body)
+  gerenciadorRequest._putInformacoesLCU("availability","submitAvailability",availability)
 
 })
 
 ipcMain.on('liberarSkin', (event) => {
-  let url = routes.Route("aramboost")
-  let body = {
-    url: url,
-    "rejectUnauthorized": false,
-    headers: {
-      Authorization: routes.getAuth()
-    },
-    json: {}
-  }
-  request.post(body)
-
+  gerenciadorRequest._postInformacoesLCU('aramboost')
 })
 ipcMain.on('submitTierDivison', (event, tier, division, queue) => {
-
-  let url = routes.Route("submitTierDivison")
-
-  let body = {
-    url: url,
-    "rejectUnauthorized": false,
-    headers: {
-      Authorization: routes.getAuth()
-    },
-    json: {
-      "lol": {
-        "regalia": "{\"bannerType\":1,\"crestType\":2}",
-        "rankedSplitRewardLevel": "3",
-        "rankedLeagueTier": tier,
-        "rankedLeagueQueue": queue,
-        "rankedLeagueDivision": division
-      }
-    }
+  var requestrule = function tierDivision(x){
+    return x.json.lol.regalia = `{\"bannerType\":1,\"crestType\":2}`
   }
+  var information = 
+  gerenciadorRequest._putInformacoesLCU(
+    'lol',
+    'submitTierDivison',
+    `{
+        "regalia":null,
+        "rankedSplitRewardLevel": "3",
+        "rankedLeagueTier": "`+tier+`",
+        "rankedLeagueQueue": "`+queue+`",
+        "rankedLeagueDivision": "`+division+`"
+    }`
 
-  request.put(body)
+  )
+
 
 })
 ipcMain.on('submitLoot', (event) => {
@@ -334,6 +290,7 @@ ipcMain.on('draftChampionSelect', (event, championstoPickandBan, state) => {
   autoAccept_enabled = true;
   draftPickLockBan(championstoPickandBan);
 })
+
 var currentTentativePick = 0;
 var draftPickLockBan = function (champions) {
   setInterval(() => {
@@ -352,13 +309,13 @@ var draftPickLockBan = function (champions) {
           'cellID': 0,
         };
         infoUsuario.cellID = data.localPlayerCellId;
-        
+
         if (data.httpStatus != 404) {
-          if(data.timer.phase=="PLANNING")
-            currentTentativePick=0;
-          if(data.actions[7][0].completed==true)
-            draft_enabled=false;
-          if (data.actions[1][0].completed) { 
+          if (data.timer.phase == "PLANNING")
+            currentTentativePick = 0;
+          if (data.actions[7][0].completed == true)
+            draft_enabled = false;
+          if (data.actions[1][0].completed) {
             let url = routes.Route('submitChampSelectAction') + associations[data.localPlayerCellId];
             let body = {
               url: url,
@@ -477,4 +434,5 @@ ipcMain.on('submitInstalock', (event, champid, int) => {
 
 autoAccept();
 instalock();
+
 connector.start();

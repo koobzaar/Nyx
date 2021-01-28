@@ -48,9 +48,7 @@ $ npm install
 $ npm start
 ```
 
-### Agradecimentos, contribuições e contato
-
-Sou imensamente grato ao [Break](https://github.com/BreakXD) do LeagueTags. Apesar de termos uma relação conturbada e eu ser extremamente contra toda forma de distribuição do seu software, se não fosse por ele não teria a inspiração necessária para fazer e manter esse software. 
+### Contato
 Caso queira me ajudar a desenvolver este software, você pode me contactar através das seguintes plataformas:
 | Plataforma | Contato |
 | ------ | ------ |
