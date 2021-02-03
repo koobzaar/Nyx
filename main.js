@@ -2,6 +2,7 @@
 var nyxGlobalConfig = require('./config/nyxGlobal.json');
 var nyxFunctionsConfig = require('./config/nyxFunctions.json');
 var funcInstalockBlind = require('./lib/funcionalidades/instalockBlind.js');
+var funcAceitarFila = require('./lib/funcionalidades/aceitarFila')
 const {
   app,
   BrowserWindow,
@@ -24,7 +25,8 @@ var LCUConnector = require('lcu-connector')
 var APIClient = require('./lib/routes')
 var connector = new LCUConnector()
 var routes
-var nyxInstalockBlind = new funcInstalockBlind(request,routes)
+var nyxInstalockBlind = new funcInstalockBlind();
+var nyxAceitarFila = new funcAceitarFila();
 const {
   type
 } = require('os');
@@ -75,6 +77,7 @@ connector.on('connect', (data) => {
   routes = new APIClient(requestUrl, data.username, data.password)
   gerenciadorRequest._carregarDados(data)
   nyxInstalockBlind._carregarDados(request,routes)
+  nyxAceitarFila._carregarDados(request,routes)
   getLocalSummoner()
 })
 ipcMain.on('close-me', (evt, arg) => {
@@ -122,49 +125,7 @@ ipcMain.on('profileUpdate', (event, wins, losses) => {
 ipcMain.on('alterarStatus', (event, status) => {
  gerenciadorRequest._putInformacoesLCU("statusMessage","submitStatus",status)
 })
-var autoAccept = function () {
-  setInterval(function () {
-    if (nyxFunctionsConfig.aceitarFilaAutomaticamente.ativo) {
-      if (!routes) return;
-      let url = routes.Route("autoAccept")
 
-      let body = {
-        url: url,
-        "rejectUnauthorized": false,
-        headers: {
-          Authorization: routes.getAuth()
-        },
-      }
-      let callback = function (error, response, body) {
-        if (!body || !IsJsonString(body)) return
-        var data = JSON.parse(body)
-
-        if (data["state"] === "InProgress") {
-
-          if (data["playerResponse"] === "None") {
-            let acceptUrl = routes.Route("accept")
-            let acceptBody = {
-              url: acceptUrl,
-              "rejectUnauthorized": false,
-              headers: {
-                Authorization: routes.getAuth()
-              },
-              json: {}
-            }
-
-            let acceptCallback = function (error, response, body) {}
-
-            if (nyxFunctionsConfig.aceitarFilaAutomaticamente.ativo) {
-              request.post(acceptBody, acceptCallback)
-            }
-
-          }
-        }
-      }
-      request.get(body, callback)
-    }
-  }, 1000)
-}
 
 ipcMain.on('submitAvailability', (event, availability) => {
   gerenciadorRequest._putInformacoesLCU("availability","submitAvailability",availability)
@@ -195,68 +156,8 @@ ipcMain.on('submitLoot', (event) => {
   let url = routes.Route("lolchatv1friends");
 })
 ipcMain.on('autoAccept', (event, int) => {
-  if (int) {
-    nyxFunctionsConfig.aceitarFilaAutomaticamente.ativo = true
-  } else {
-    nyxFunctionsConfig.aceitarFilaAutomaticamente.ativo = false
-  }
+  nyxAceitarFila.toggleAceitarFila(int);
 })
-
-function IsJsonString(str) {
-  try {
-    JSON.parse(str);
-  } catch (e) {
-    return false;
-  }
-  return true;
-}
-var autoAccept = function () {
-  setInterval(function () {
-    if (nyxFunctionsConfig.aceitarFilaAutomaticamente.ativo) {
-      if (!routes) return
-
-      let url = routes.Route("autoAccept")
-
-      let body = {
-        url: url,
-        "rejectUnauthorized": false,
-        headers: {
-          Authorization: routes.getAuth()
-        },
-      }
-
-      let callback = function (error, response, body) {
-        if (!body || !IsJsonString(body)) return
-        var data = JSON.parse(body)
-
-        if (data["state"] === "InProgress") {
-
-          if (data["playerResponse"] === "None") {
-            let acceptUrl = routes.Route("accept")
-            let acceptBody = {
-              url: acceptUrl,
-              "rejectUnauthorized": false,
-              headers: {
-                Authorization: routes.getAuth()
-              },
-              json: {}
-            }
-
-            let acceptCallback = function (error, response, body) {}
-
-            if (nyxFunctionsConfig.aceitarFilaAutomaticamente.ativo) {
-              request.post(acceptBody, acceptCallback)
-            }
-
-          }
-        }
-      }
-
-      request.get(body, callback)
-    }
-  }, 1000)
-}
-
 ipcMain.on('draftChampionSelect', (event, championstoPickandBan, state) => {
   nyxFunctionsConfig.alternadaAutomatica.ativo = state;
   nyxFunctionsConfig.aceitarFilaAutomaticamente.ativo = true;
@@ -343,18 +244,7 @@ var draftPickLockBan = function (champions) {
   }, 500);
 };
 ipcMain.on('submitInstalock', (event, champid, int) => {
-  if (int) {
-    
-    nyxInstalockBlind.campeaoLock = champid;
-    nyxInstalockBlind.toogleInstalock(int)
-  } else {
-    nyxInstalockBlind.toogleInstalock(int)
-  }
+  nyxInstalockBlind.toogleInstalock(int)
+  nyxInstalockBlind.campeaoLock = champid;
 })
-
-autoAccept();
-
-
-
-
 connector.start();
