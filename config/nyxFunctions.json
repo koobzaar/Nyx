@@ -8,26 +8,6 @@
         "quantidadeSpams": 5,
         "milisegundosSpam": 87500
     },
-    "alternadaAutomatica": {
-        "ativo": false,
-        "data": {
-            "cellIDUsuario": 0,
-            "tentativaPickAtual": 0,
-            "associacoes": [
-                10,
-                13,
-                14,
-                17,
-                18,
-                11,
-                12,
-                15,
-                16,
-                19,
-                11
-            ]
-        }
-    },
     "pingRiot": {
         "ativo": true,
         "enderecos": [

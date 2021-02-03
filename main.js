@@ -1,6 +1,7 @@
 
 var nyxGlobalConfig = require('./config/nyxGlobal.json');
 var nyxFunctionsConfig = require('./config/nyxFunctions.json');
+var funcInstalockBlind = require('./lib/funcionalidades/instalockBlind.js');
 const {
   app,
   BrowserWindow,
@@ -23,7 +24,7 @@ var LCUConnector = require('lcu-connector')
 var APIClient = require('./lib/routes')
 var connector = new LCUConnector()
 var routes
-
+var nyxInstalockBlind = new funcInstalockBlind(request,routes)
 const {
   type
 } = require('os');
@@ -73,6 +74,7 @@ connector.on('connect', (data) => {
   requestUrl = data.protocol + '://' + data.address + ':' + data.port
   routes = new APIClient(requestUrl, data.username, data.password)
   gerenciadorRequest._carregarDados(data)
+  nyxInstalockBlind._carregarDados(request,routes)
   getLocalSummoner()
 })
 ipcMain.on('close-me', (evt, arg) => {
@@ -123,8 +125,7 @@ ipcMain.on('alterarStatus', (event, status) => {
 var autoAccept = function () {
   setInterval(function () {
     if (nyxFunctionsConfig.aceitarFilaAutomaticamente.ativo) {
-      if (!routes) return
-
+      if (!routes) return;
       let url = routes.Route("autoAccept")
 
       let body = {
@@ -134,7 +135,6 @@ var autoAccept = function () {
           Authorization: routes.getAuth()
         },
       }
-
       let callback = function (error, response, body) {
         if (!body || !IsJsonString(body)) return
         var data = JSON.parse(body)
@@ -161,7 +161,6 @@ var autoAccept = function () {
           }
         }
       }
-
       request.get(body, callback)
     }
   }, 1000)
@@ -343,69 +342,19 @@ var draftPickLockBan = function (champions) {
 
   }, 500);
 };
-
-var instalock = function () {
-  setInterval(function () {
-    if (nyxFunctionsConfig.instalockBlind.ativo) {
-      let url = routes.Route('submitChampSelectSession');
-      let body = {
-        url: url,
-        "rejectUnauthorized": false,
-        headers: {
-          Authorization: routes.getAuth()
-        },
-      }
-
-      let callback = function (error, response, body) {
-        var data = JSON.parse(body);
-        var cellId, i;
-        var localSumId;
-        var spamTimes = 5;
-        var spamTimeMs = 90000 - (500 * spamTimes);
-
-        if (data['isSpectating'] == false && data['timer']['adjustedTimeLeftInPhase'] > spamTimeMs) {
-
-          if (data['isCustomGame'] == false) {
-            cellId = data['localPlayerCellId'];
-
-
-          } else {
-            cellId = data['localPlayerCellId'] + 1;
-
-          }
-          let urlLock = (routes.Route('submitChampSelectAction') + cellId);
-
-          let bodyLock = {
-            url: urlLock,
-            "rejectUnauthorized": false,
-            headers: {
-              Authorization: routes.getAuth()
-            },
-            json: {
-              "championId": championToLock,
-              "completed": true
-
-            }
-          }
-          request.patch(bodyLock);
-
-        }
-      }
-      request.get(body, callback);
-    }
-  }, 500)
-}
-
 ipcMain.on('submitInstalock', (event, champid, int) => {
   if (int) {
-    championToLock = champid;
-    nyxFunctionsConfig.instalockBlind.ativo = true;
+    
+    nyxInstalockBlind.campeaoLock = champid;
+    nyxInstalockBlind.toogleInstalock(int)
   } else {
-    nyxFunctionsConfig.instalockBlind.ativo = false;
+    nyxInstalockBlind.toogleInstalock(int)
   }
 })
 
 autoAccept();
-instalock();
+
+
+
 
 connector.start();
