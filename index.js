@@ -91,9 +91,6 @@ function submitAvailability(e) {
   ipcRenderer.send('submitAvailability', availability)
 }
 
-function submitLoot(){
-  ipcRenderer.send('submitLoot');
-}
 function submitTierDivison(e) {
   e.preventDefault();
   var selectedDivision = document.querySelector('#division').value;

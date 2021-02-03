@@ -1,0 +1,40 @@
+{
+    "aceitarFilaAutomaticamente": {
+        "ativo": false
+    },
+    "instalockBlind": {
+        "ativo": false,
+        "campeaoParaLockar": null,
+        "quantidadeSpams": 5,
+        "milisegundosSpam": 87500
+    },
+    "alternadaAutomatica": {
+        "ativo": false,
+        "data": {
+            "cellIDUsuario": 0,
+            "tentativaPickAtual": 0,
+            "associacoes": [
+                10,
+                13,
+                14,
+                17,
+                18,
+                11,
+                12,
+                15,
+                16,
+                19,
+                11
+            ]
+        }
+    },
+    "pingRiot": {
+        "ativo": true,
+        "enderecos": [
+            "45.7.36.80",
+            "lq.br.lol.riotgames.com",
+            "prod.br.lol.riotgames.com",
+            "br.chat.si.riotgames.com"
+        ]
+    }
+}
