@@ -5,6 +5,7 @@
     "confDeInicializacao":{
         "width": 1600,
         "height": 900,
+        "icon": "./assets/nyxIcon.png",
         "resizable": false,
         "webPreferences": {
           "nodeIntegration": true

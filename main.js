@@ -2,7 +2,8 @@
 var nyxGlobalConfig = require('./config/nyxGlobal.json');
 var nyxFunctionsConfig = require('./config/nyxFunctions.json');
 var funcInstalockBlind = require('./lib/funcionalidades/instalockBlind.js');
-var funcAceitarFila = require('./lib/funcionalidades/aceitarFila')
+var funcAceitarFila = require('./lib/funcionalidades/aceitarFila.js')
+var funcDraftAutomatico = require('./lib/funcionalidades/draftAutomatico.js')
 const {
   app,
   BrowserWindow,
@@ -27,6 +28,7 @@ var connector = new LCUConnector()
 var routes
 var nyxInstalockBlind = new funcInstalockBlind();
 var nyxAceitarFila = new funcAceitarFila();
+var nyxDraftAutomatico = new funcDraftAutomatico()
 const {
   type
 } = require('os');
@@ -73,11 +75,11 @@ async function pingRiot() {
 }
 
 connector.on('connect', (data) => {
-  requestUrl = data.protocol + '://' + data.address + ':' + data.port
-  routes = new APIClient(requestUrl, data.username, data.password)
+  routes = new APIClient(data.protocol + '://' + data.address + ':' + data.port, data.username, data.password)
   gerenciadorRequest._carregarDados(data)
   nyxInstalockBlind._carregarDados(request,routes)
   nyxAceitarFila._carregarDados(request,routes)
+  nyxDraftAutomatico._carregarDados(request,routes)
   getLocalSummoner()
 })
 ipcMain.on('close-me', (evt, arg) => {
@@ -92,8 +94,6 @@ ipcMain.on('minimize_app', function () {
 })
 
 pingRiot();
-var requestUrl;
-
 function getLocalSummoner() {
   let url = routes.Route("localSummoner")
   let body = {
@@ -120,21 +120,16 @@ ipcMain.on('profileUpdate', (event, wins, losses) => {
     console.log('Erro ao tentar receber as informações do usuário: ' + e.message);
     JanelaPrincipal.loadFile('./pages/summonerNotFound/summonerNotFound.html');
   }
-})
-
+});
 ipcMain.on('alterarStatus', (event, status) => {
  gerenciadorRequest._putInformacoesLCU("statusMessage","submitStatus",status)
-})
-
-
+});
 ipcMain.on('submitAvailability', (event, availability) => {
   gerenciadorRequest._putInformacoesLCU("availability","submitAvailability",availability)
-
-})
-
+});
 ipcMain.on('liberarSkin', (event) => {
   gerenciadorRequest._postInformacoesLCU('aramboost')
-})
+});
 ipcMain.on('submitTierDivison', (event, tier, division, queue) => {
   var requestrule = function tierDivision(x){
     return x.json.lol.regalia = `{\"bannerType\":1,\"crestType\":2}`
@@ -150,101 +145,16 @@ ipcMain.on('submitTierDivison', (event, tier, division, queue) => {
         "rankedLeagueDivision": "`+division+`"
     }`
   )
-})
-ipcMain.on('submitLoot', (event) => {
-
-  let url = routes.Route("lolchatv1friends");
-})
+});
 ipcMain.on('autoAccept', (event, int) => {
   nyxAceitarFila.toggleAceitarFila(int);
-})
+});
 ipcMain.on('draftChampionSelect', (event, championstoPickandBan, state) => {
-  nyxFunctionsConfig.alternadaAutomatica.ativo = state;
-  nyxFunctionsConfig.aceitarFilaAutomaticamente.ativo = true;
-  draftPickLockBan(championstoPickandBan);
-})
-
-var currentTentativePick = 0;
-var draftPickLockBan = function (champions) {
-  setInterval(() => {
-    if (nyxFunctionsConfig.alternadaAutomatica.ativo) {
-      let url = routes.Route('submitChampSelectSession');
-      let body = {
-        url: url,
-        "rejectUnauthorized": false,
-        headers: {
-          Authorization: routes.getAuth()
-        },
-      }
-      let callback = function (error, response, body) {
-        var data = JSON.parse(body);
-        var infoUsuario = {
-          'cellID': 0,
-        };
-        infoUsuario.cellID = data.localPlayerCellId;
-
-        if (data.httpStatus != 404) {
-          if (data.timer.phase == "PLANNING")
-            currentTentativePick = 0;
-          if (data.actions[7][0].completed == true)
-            nyxFunctionsConfig.alternadaAutomatica.ativo = false;
-          if (data.actions[1][0].completed) {
-            let url = routes.Route('submitChampSelectAction') + nyxFunctionsConfig.alternadaAutomatica.data.associacoes[data.localPlayerCellId];
-            let body = {
-              url: url,
-              "rejectUnauthorized": false,
-              headers: {
-                Authorization: routes.getAuth()
-              },
-              json: {
-                "actorCellId": 0,
-                "championId": champions.pick[currentTentativePick],
-                "completed": true,
-                "id": 0,
-                "isAllyAction": true,
-                "type": "string"
-              }
-            }
-            let callback2 = function (error, response, body) { //null?
-              try {
-                if (body.httpStatus == '500')
-                  currentTentativePick++;
-                if (body.httpStatus == '200') {
-                  currentTentativePick = 0;
-                  nyxFunctionsConfig.alternadaAutomatica.ativo = false;
-                }
-              } catch (e) {}
-            }
-            request.patch(body, callback2);
-          } else { // banir
-            let url = routes.Route('submitChampSelectAction') + data.localPlayerCellId;
-            let body = {
-              url: url,
-              "rejectUnauthorized": false,
-              headers: {
-                Authorization: routes.getAuth()
-              },
-              json: {
-                "actorCellId": 0,
-                "championId": champions.ban[0],
-                "completed": true,
-                "id": 0,
-                "isAllyAction": true,
-                "type": "string"
-              }
-            }
-            request.patch(body);
-          }
-        }
-      }
-      request.get(body, callback);
-
-    }
-
-  }, 500);
-};
+  nyxDraftAutomatico._toggleAutoDraft(state,championstoPickandBan);
+  nyxAceitarFila.toggleAceitarFila(true);
+});
 ipcMain.on('submitInstalock', (event, champid, int) => {
   nyxInstalockBlind.toogleInstalock(int)
   nyxInstalockBlind.campeaoLock = champid;
-})
+});
 connector.start();
