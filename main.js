@@ -4,6 +4,7 @@ var nyxFunctionsConfig = require('./config/nyxFunctions.json');
 var funcInstalockBlind = require('./lib/funcionalidades/instalockBlind.js');
 var funcAceitarFila = require('./lib/funcionalidades/aceitarFila.js')
 var funcDraftAutomatico = require('./lib/funcionalidades/draftAutomatico.js')
+var funcPingChecker = require('./lib/funcionalidades/pingTester.js')
 const {
   app,
   BrowserWindow,
@@ -25,16 +26,11 @@ var request = require('request')
 var LCUConnector = require('lcu-connector')
 var APIClient = require('./lib/routes')
 var connector = new LCUConnector()
-var routes
+var routes;
 var nyxInstalockBlind = new funcInstalockBlind();
 var nyxAceitarFila = new funcAceitarFila();
-var nyxDraftAutomatico = new funcDraftAutomatico()
-const {
-  type
-} = require('os');
-
-
-
+var nyxDraftAutomatico = new funcDraftAutomatico();
+var nyxPingChecker = new funcPingChecker(JanelaPrincipal)
 app.on('ready', function () {
   createWindow()
 });
@@ -46,33 +42,6 @@ app.on('window-all-closed', () => {
 ipcMain.on('Contato', function () {
   shell.openExternal('https://discord.gg/zREzYzB');
 });
-async function pingRiot() {
-  var ping = require('ping');
-  setTimeout(async function () {
-
-    for (let host of nyxFunctionsConfig.pingRiot.enderecos) {
-      try {
-        if (host === '45.7.36.80') {
-          let res = await ping.promise.probe(host);
-          JanelaPrincipal.webContents.send('pingServidordeJogo1', res.time)
-        } else if (host === 'lq.br.lol.riotgames.com') {
-          let res = await ping.promise.probe(host);
-          JanelaPrincipal.webContents.send('pingServidorLogin', res.time)
-        } else if (host === 'prod.br.lol.riotgames.com') {
-          let res = await ping.promise.probe(host);
-          JanelaPrincipal.webContents.send('pingServidorClient', res.time)
-        } else if (host === 'br.chat.si.riotgames.com') {
-          let res = await ping.promise.probe(host);
-          JanelaPrincipal.webContents.send('pingServidorChat', res.time)
-        }
-      } catch (e) {
-        console.log(e.message)
-      }
-    }
-    pingRiot();
-  }, 500)
-
-}
 
 connector.on('connect', (data) => {
   routes = new APIClient(data.protocol + '://' + data.address + ':' + data.port, data.username, data.password)
@@ -80,6 +49,7 @@ connector.on('connect', (data) => {
   nyxInstalockBlind._carregarDados(request,routes)
   nyxAceitarFila._carregarDados(request,routes)
   nyxDraftAutomatico._carregarDados(request,routes)
+  nyxPingChecker._startPinging(JanelaPrincipal);
   getLocalSummoner()
 })
 ipcMain.on('close-me', (evt, arg) => {
@@ -92,8 +62,6 @@ ipcMain.on('restart-me', (evt, arg) => {
 ipcMain.on('minimize_app', function () {
   JanelaPrincipal.minimize()
 })
-
-pingRiot();
 function getLocalSummoner() {
   let url = routes.Route("localSummoner")
   let body = {
@@ -104,7 +72,6 @@ function getLocalSummoner() {
     }
   }
   let callback = function (error, response, body) {
-    console.log(body)
     LocalSummoner = new Summoner(body, routes)
   }
   request.get(body, callback)

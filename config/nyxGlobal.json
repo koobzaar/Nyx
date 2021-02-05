@@ -7,6 +7,7 @@
         "height": 900,
         "icon": "./assets/nyxIcon.png",
         "resizable": false,
+        "frame":false,
         "webPreferences": {
           "nodeIntegration": true
         }

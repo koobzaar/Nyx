@@ -1,10 +1,19 @@
-
 .Card {
     margin-bottom: 40px;
 
 }
-body{
-    background-image: url('../assets/background.png');
+
+body {
+    user-select: none;
+}
+
+#videoBG {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: -3;
 }
 
 #card {
@@ -21,9 +30,15 @@ body{
     justify-content: center;
     align-items: center;
     flex-flow: column;
-    flex: 1 0 10%; /* explanation below */
+    flex: 1 0 10%;
+    /* explanation below */
 
 }
+
+body {
+    overflow: hidden;
+}
+
 #cardPings {
     background-color: white;
     width: 300px;
@@ -38,11 +53,11 @@ body{
     justify-content: center;
     flex-flow: column;
     padding: 10px;
-    
+
 
 }
 
-#cardPings .item{
+#cardPings .item {
     width: 100%;
     height: 33%;
     padding: 0;
@@ -50,7 +65,8 @@ body{
     padding-bottom: 2px;
     padding-top: 4px;
 }
-#cardPings #titleSection{
+
+#cardPings #titleSection {
     height: 40%;
     padding: 0;
     display: flex;
@@ -58,21 +74,25 @@ body{
     align-items: center;
     margin: 0;
 }
-#cardPings h4{
+
+#cardPings h4 {
     margin-left: -15px;
 }
-#cardPings i{
+
+#cardPings i {
     margin-left: -15px;
     margin-bottom: 10px;
     width: 20%;
 }
-#cardPings p{
+
+#cardPings p {
     margin-top: 5px !important;
     font-weight: 400;
     padding: 0;
     margin: 0;
     font-size: 12px;
 }
+
 .estatisticas {
     padding-top: 40px;
     display: flex;
@@ -82,10 +102,11 @@ body{
     flex-wrap: wrap;
 }
 
-#cardPingGame p{
+#cardPingGame p {
     height: 20%;
     background-color: blue;
 }
+
 #goodPing {
     font-size: 90px;
     color: rgb(6, 179, 6);
@@ -119,11 +140,13 @@ body{
     align-items: center;
     flex-flow: row;
 }
-#bigwidth{
+
+#bigwidth {
     width: 600px;
     height: 30px;
 }
-#cardPingGame{
+
+#cardPingGame {
     background-color: white;
     width: 250px;
     height: 250px;
@@ -138,6 +161,7 @@ body{
     align-items: center;
     flex-flow: column;
 }
+
 #statsCard {
     width: 350px;
     height: 250px;
@@ -145,7 +169,7 @@ body{
     margin-left: 5px;
     margin-left: 60px;
     border-radius: 15px;
-   
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -158,9 +182,11 @@ body{
     justify-content: center;
     align-items: center;
 }
-.summoner{
+
+.summoner {
     background-color: #4072EA !important;
 }
+
 #invocadorImagem {
     width: 150px;
     height: 150px;
@@ -174,23 +200,27 @@ body{
     justify-content: center;
     align-items: center;
 }
-#nivelInvocador{
+
+#nivelInvocador {
     color: rgb(245, 245, 245);
     font-weight: 400;
 }
+
 #invocadorImagem img {
     border: 1px solid grey;
     max-width: 90%;
     max-height: 90%;
     border-radius: 100%;
 }
-.ping p{
-}
-#changeElo{
+
+.ping p {}
+
+#changeElo {
     padding-left: 10px;
     padding-right: 10px;
     margin-top: 10px;
 }
+
 #changeElo select {
     background-color: rgb(252, 252, 252) !important;
     font-weight: 400;
@@ -200,6 +230,7 @@ body{
     border: none !important;
     outline: none !important;
 }
+
 textarea {
     font-weight: 400 !important;
     border-radius: 10px;
@@ -214,17 +245,19 @@ textarea {
     margin-bottom: -15px !important;
 
 }
-textarea ::-webkit-input-placeholder{
+
+textarea ::-webkit-input-placeholder {
     font-weight: lighter !important;
 }
-select .form-contro{
 
-}
-.input-group-addon{
+select .form-contro {}
+
+.input-group-addon {
     background-color: white !important;
     color: white;
-    border:none !important;
+    border: none !important;
 }
+
 button {
     margin-top: 4px !important;
     width: 100% !important;
@@ -241,9 +274,12 @@ button {
 #cardTitle {
     color: #4C5065;
 }
-#statsCard{
-    flex: 1 0 10%; /* explanation below */
+
+#statsCard {
+    flex: 1 0 10%;
+    /* explanation below */
 }
+
 #disponibilidadeClient select {
     background-color: rgb(252, 252, 252) !important;
     font-weight: 400;
@@ -255,19 +291,22 @@ button {
     outline: none !important;
 }
 
-  #aramBoost{
-      width: 320px !important;
-  }
-  #descriptionExploit{
-      font-weight: 400 !important;
-      text-align: center;
-    }
-    #aramExploitButton h4{
-        text-align: center;
-        margin-top: 30px !important;
-margin-bottom: -10px !important;
-    }
-#nyxLogo{
+#aramBoost {
+    width: 320px !important;
+}
+
+#descriptionExploit {
+    font-weight: 400 !important;
+    text-align: center;
+}
+
+#aramExploitButton h4 {
+    text-align: center;
+    margin-top: 30px !important;
+    margin-bottom: -10px !important;
+}
+
+#nyxLogo {
     margin-left: 32px;
     width: 200px;
 }
