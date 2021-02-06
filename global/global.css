@@ -9,7 +9,15 @@ body
 }
 
 
-
+.drag
+{
+    position: absolute;
+    width: 85%;
+    height: 100px;
+    top: -20px;
+    -webkit-app-region: drag;
+    z-index: -1;
+}
 .settings {
   
   height:73px; 
@@ -49,8 +57,9 @@ overflow-x: hidden;
 }
 
 /* Scrollbar Style */ 
-
-
+button{
+  outline: none !important;
+}
 
 #style-1::-webkit-scrollbar-track
 {
@@ -110,7 +119,6 @@ overflow:hidden;
 -webkit-transition:width .2s linear;
 transition:width .2s linear;
 -webkit-transform:translateZ(0) scale(1,1);
-box-shadow: 1px 0 15px rgba(0, 0, 0, 0.07);
   opacity:1;
 }
 
@@ -327,6 +335,7 @@ h2 {
     top: 0%;
     color: white;
     position: absolute;
+    z-index: 1;
 }
 .closeandMinimize img{
     margin-top: 20px;

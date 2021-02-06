@@ -47,10 +47,6 @@ $ cd Nyx/
 $ npm install 
 $ npm start
 ```
-
-### Agradecimentos, contribuições e contato
-
-Fvck [Break](https://github.com/BreakXD) do LeagueTags.
 Caso queira me ajudar a desenvolver este software, você pode me contactar através das seguintes plataformas:
 | Plataforma | Contato |
 | ------ | ------ |

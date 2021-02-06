@@ -1,19 +1,30 @@
 {
   "name": "Nyx",
-  "version": "0.1.0",
-  "author": "Bruno Bezerra Trigueiro",
+  "version": "0.1.4",
+  "author": "Kobzar",
   "description": "Gerenciador automático em electron para o cliente do League of Legends",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
-  },
-  "directories": {
-    "lib": "lib"
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "keywords": [],
-  "license": "ISC",
+  "license": "Leia o readme do repositório.",
   "devDependencies": {
-    "electron": "^11.2.0"
+    "electron": "^11.2.0",
+    "electron-builder": "^22.9.1"
+  },
+  "build": {
+    "appId": "nyx.APP",
+    "icon":"./assets/icon.ico",
+    "asar":false,
+    "mac": {
+      "category": "LCU.Manipulator"
+    },
+    "directories": {
+      "output": "../dist"
+    }
   },
   "dependencies": {
     "jquery": "^3.5.1",

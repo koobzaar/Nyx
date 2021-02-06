@@ -78,7 +78,7 @@ function liberarSkin(e){
 }
 function envioStatus(e) {
   e.preventDefault();
-  var status = document.querySelector('#statusUsuario').value;
+  var status = `"`+document.querySelector('#statusUsuario').value+`"`;
   ipcRenderer.send('alterarStatus', status)
   document.querySelector('#statusUsuario').value = '';
 }
@@ -86,14 +86,11 @@ function envioStatus(e) {
 function submitAvailability(e) {
   e.preventDefault();
 
-  var availability = document.querySelector('#availability').value;
+  var availability = `"`+document.querySelector('#availability').value+`"`
   console.log(availability)
   ipcRenderer.send('submitAvailability', availability)
 }
 
-function submitLoot(){
-  ipcRenderer.send('submitLoot');
-}
 function submitTierDivison(e) {
   e.preventDefault();
   var selectedDivision = document.querySelector('#division').value;

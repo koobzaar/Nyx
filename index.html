@@ -35,13 +35,14 @@
                         <a href="./pages/championSelectDraftPick/championSelectDraftPick.html"> <i class="fa fa-low-vision"></i> <span
                                 class="nav-text">Seleção de Campeões (Draft)</span>
                         </a>
-                    </li>
+                    </li>                   
                     <li>
                         <a onclick="openContato()"> <i class="fa fa-envelope-o fa-lg"></i> <span
                                 class="nav-text">Entre em contato</a></span> </a>
                     </li>
                 </ul>
         </nav>
+        
         <div class="title">
             <h3>SISTEMA NYX</h3>
             <h1>Bem vindo de volta, <span id="nomeInvocador">Invocador</span>.</h1>
@@ -53,6 +54,7 @@
             <a href="" id="close"><img src="./assets/cancel.svg" alt=""></a>
 
         </div>
+        <div class="drag"></div>
         <div class='estatisticas'>
             <div class='Card'>
                 <div id="cardTitle">Invocador</div>
@@ -119,8 +121,8 @@
                         <button type="submit" class="btn btn-primary">Alterar disponibilidade</button>
                     </form>
                     <div id="aramExploitButton">
-                        <h4>Exploit ARAM - Skin gratuita</h4>
-                        <p id="descriptionExploit">Libere Bônus de Skin para todos os<br> seus aliados dentro da partida
+                        <h4>Bônus de Batalha - Exploit</h4>
+                        <p id="descriptionExploit">Libere Bônus de Skin no ARAM ou ARURF<br>para todos os seus aliados dentro da partida.
                         </p>
                         <button id='aramBoost' type="submit" class="btn btn-primary" data-toggle="tooltip"
                             data-placement="top" onclick="liberarSkin()"
@@ -136,7 +138,7 @@
                 </div>
             </div>
             <div class='Card'>
-                <div id="cardTitle"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Seu ping com outros serviços</b></div>
+                <div id="cardTitle"><b>Seu ping nos outros serviços</b></div>
                 <div id="cardPings">
                     <div class="item">
                         <div id="titleSection"><i class="fa fa-sign-in"></i>
@@ -156,8 +158,13 @@
                         </div>
                         <p><span id="pingChat">Aguardando resposta...</span></p>
                     </div>
+                    
                 </div>
+                
             </div>
+            <video autoplay muted loop id="videoBG">
+                <source src="./assets/background.mp4" type="video/mp4">
+              </video>
             <script src="./index.js"></script>
 </body>
 
