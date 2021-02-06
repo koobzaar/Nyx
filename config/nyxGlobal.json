@@ -5,7 +5,7 @@
     "confDeInicializacao":{
         "width": 1600,
         "height": 900,
-        "icon": "./assets/nyxIcon.png",
+        "icon": "./assets/icon.ico",
         "resizable": false,
         "frame":false,
         "webPreferences": {

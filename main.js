@@ -80,8 +80,9 @@ ipcMain.on('profileUpdate', (event, wins, losses) => {
   try {
     getLocalSummoner();
     event.returnValue = LocalSummoner.getProfileData();
-    if (nyxGlobalConfig.states.inicializou == false)
-      JanelaPrincipal.loadFile('index.html');
+    if (nyxGlobalConfig.states.inicializou == false){
+        JanelaPrincipal.loadFile('index.html');
+    }
       nyxGlobalConfig.states.inicializou = true;
   } catch (e) {
     console.log('Erro ao tentar receber as informações do usuário: ' + e.message);
