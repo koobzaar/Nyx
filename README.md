@@ -47,8 +47,6 @@ $ cd Nyx/
 $ npm install 
 $ npm start
 ```
-
-### Contato
 Caso queira me ajudar a desenvolver este software, você pode me contactar através das seguintes plataformas:
 | Plataforma | Contato |
 | ------ | ------ |
