@@ -19,7 +19,7 @@ Você também pode:
   - Definir mensagem personalizada sem limite de caracteres;
   - Definir sua disponibilidade para qualquer uma do jogo, podendo ficar invisível mesmo estando online;
   - Alterar seu elo para qualquer classificação do jogo na lista de amigos;
-  - Liberar o bônus de batalha no ARAM (boost) mesmo sem ter RP's suficientes.
+  - Pickar e banir múltiplos campeões automaticamente, assim como aceitar a fila. Tudo 100% automático. 
 
 
 ### LICENÇA - O que eu posso fazer com esse software?
