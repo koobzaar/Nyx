@@ -50,7 +50,7 @@ $ yarn run start
 Caso queira me ajudar a desenvolver este software, você pode me contactar através das seguintes plataformas:
 | Plataforma | Contato |
 | ------ | ------ |
-| Discord - Usuário| Kobzar#4164  |
+| Discord - Usuário| Kobzar#0001  |
 | Discord - Meu ID| 225585864200290304 |
 | Discord - Meu Servidor|  https://discord.gg/zREzYzB |
 | E-mail | bruno.trigueiro@outlook.com |
