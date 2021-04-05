@@ -44,8 +44,8 @@ Você pode baixar a versão mais recente através desse link:
 
 ```sh
 $ cd Nyx/
-$ npm install 
-$ npm start
+$ yarn install 
+$ yarn run start
 ```
 Caso queira me ajudar a desenvolver este software, você pode me contactar através das seguintes plataformas:
 | Plataforma | Contato |
