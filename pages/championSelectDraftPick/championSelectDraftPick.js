@@ -1,7 +1,7 @@
 const {
   ipcRenderer
 } = require('electron');
-var champions = require('lol-champions');
+var champions = require('../../lib/champions/champions.json');
 var $ = require('jQuery');
 var champ = [];
 var keysChampions = [];
