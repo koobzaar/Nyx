@@ -66,7 +66,7 @@ function autocomplete(inp, arr) {
               console.log(arr[i])
               console.log(i)
             $('.squareImage').remove();
-            $('#championSquare').append('<img class="squareImage" src="http://ddragon.leagueoflegends.com/cdn/11.2.1/img/champion/'+arr[i]+'.png" alt="">')
+            $('#championSquare').append('<img class="squareImage" src="http://ddragon.leagueoflegends.com/cdn/11.8.1/img/champion/'+arr[i]+'.png" alt="">')
             $('#titleChampion').text(arr[i]+', '+ champTitle[i]);
             champKey = keysChampions[i];
             $('#loreChampion').text(championsDescription[i]);

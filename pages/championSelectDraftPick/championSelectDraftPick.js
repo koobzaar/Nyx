@@ -143,7 +143,7 @@ function autocomplete(inp, arr) {
         /*check if the item starts with the same letters as the text field value:*/
         if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
           $('#pickSquare').remove();
-          $('#pickSideSquare').append('<img class="squareImage" id="pickSquare" src="http://ddragon.leagueoflegends.com/cdn/11.2.1/img/champion/' + arr[i] + '.png" alt="">')
+          $('#pickSideSquare').append('<img class="squareImage" id="pickSquare" src="http://ddragon.leagueoflegends.com/cdn/11.8.1/img/champion/' + arr[i] + '.png" alt="">')
           $('#pickTitleChampion').text(arr[i] + ', ' + champTitle[i]);
           selectedChampion.pick.id = keysChampions[i];
           selectedChampion.pick.name = arr[i];
@@ -167,7 +167,7 @@ function autocomplete(inp, arr) {
         if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
 
           $('#banSquare').remove();
-          $('#banSideSquare').append('<img class="squareImage" id="banSquare" src="http://ddragon.leagueoflegends.com/cdn/11.2.1/img/champion/' + arr[i] + '.png" alt="">')
+          $('#banSideSquare').append('<img class="squareImage" id="banSquare" src="http://ddragon.leagueoflegends.com/cdn/11.8.1/img/champion/' + arr[i] + '.png" alt="">')
           $('#banTitleChampion').text(arr[i] + ', ' + champTitle[i]);
           selectedChampion.ban.id = keysChampions[i];
           selectedChampion.ban.name = arr[i];
