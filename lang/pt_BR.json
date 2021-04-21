@@ -1,0 +1,14 @@
+{
+    "package":{
+        "code":"pt_BR"
+    },
+    "user-interface":{
+        "lateral-menu":{
+            "profile":"PERFIL",
+            "overview":"Início"
+        },
+        "dashboard":{
+
+        }
+    }
+}
