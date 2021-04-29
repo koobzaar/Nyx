@@ -1,5 +1,5 @@
 # Nyx 
-### Automatizador para League of Legends + alguns exploits
+### Automatizador para League of Legends + ARAM Skin Boost Exploit (free)
 
 Nyx tem como principal função automatizar ações e diminuir interações usuário-client. Programado em Electron, conta com ferramentas que manipulam requests para o LCU.
 ## Problemáticas e funcionalidades do Nyx
