@@ -35,8 +35,8 @@ Você também pode:
 - Proibido modificar o trabalho original para ocultar conteúdo malicioso. Isso faria de você um COMPLETO idiota.  
 
 
-## Releases
- Atualmente se encontra em Alpha. Não há previsões para o lançamento oficial.
+## Releases (Download)
+ Atualmente estamos na primeira versão. Dependendo do tamanho do Nyx, há um rework programado.
 Você pode baixar a versão mais recente através desse link:
 > https://github.com/koobzaar/Nyx/releases
 
