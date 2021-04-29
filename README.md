@@ -1,7 +1,7 @@
 # Nyx 
 ### Automatizador para League of Legends + alguns exploits
 
-Nyx tem como principal função automatizar ações e diminuir interações usuário-client. Programado em Electron, conta com ferramentas que manipulam requests client>server via LCU.
+Nyx tem como principal função automatizar ações e diminuir interações usuário-client. Programado em Electron, conta com ferramentas que manipulam requests para o LCU.
 ## Problemáticas e funcionalidades do Nyx
 
   - Invocadores com grande tempo de fila normalmente ficam longe do teclado enquanto aguardam a verificação de prontidão da partida.
